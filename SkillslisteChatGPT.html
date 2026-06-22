@@ -1,0 +1,2309 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <title>Skillssammlung interaktiv</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --paper: rgba(255, 255, 255, .88);
+      --paper-solid: #ffffff;
+      --ink: #1e2430;
+      --muted: #687286;
+      --line: rgba(40, 48, 70, .14);
+      --accent: #6b5cff;
+      --accent-2: #00a7a7;
+      --high: #e25555;
+      --mid: #f59e0b;
+      --low: #3aa76d;
+      --anti: #e25555;
+      --distract: #5d7df0;
+      --relax: #00a7a7;
+      --solve: #7c4dff;
+      --shadow: 0 18px 55px rgba(24, 34, 66, .13);
+      --small-shadow: 0 10px 28px rgba(24, 34, 66, .10);
+      --radius: 24px;
+      --radius-sm: 15px;
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #121621;
+        --paper: rgba(28, 33, 47, .88);
+        --paper-solid: #1c2130;
+        --ink: #f2f5fb;
+        --muted: #a7b0c2;
+        --line: rgba(229, 235, 249, .14);
+        --shadow: 0 18px 55px rgba(0, 0, 0, .32);
+        --small-shadow: 0 10px 28px rgba(0, 0, 0, .24);
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Noto Color Emoji", "Apple Color Emoji", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(107, 92, 255, .23), transparent 32rem),
+        radial-gradient(circle at 85% 15%, rgba(0, 167, 167, .18), transparent 28rem),
+        linear-gradient(180deg, var(--bg), var(--bg));
+      min-height: 100vh;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 28px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      padding: 24px 0 18px;
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 8px);
+      background: linear-gradient(135deg, rgba(255, 255, 255, .92), rgba(255, 255, 255, .7));
+      box-shadow: var(--shadow);
+      min-height: 340px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .hero-card {
+        background: linear-gradient(135deg, rgba(34, 40, 58, .95), rgba(28, 33, 47, .76));
+      }
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr);
+      gap: clamp(20px, 5vw, 48px);
+      align-items: center;
+      padding: clamp(24px, 5vw, 56px);
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2.2rem, 6vw, 5rem);
+      line-height: .94;
+      letter-spacing: -0.06em;
+    }
+
+    .hero .lead {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: clamp(1.02rem, 2.4vw, 1.28rem);
+      line-height: 1.55;
+      max-width: 64ch;
+    }
+
+    .badges {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .5);
+      color: var(--muted);
+      font-weight: 650;
+      font-size: .92rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .badge {
+        background: rgba(255, 255, 255, .06);
+      }
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .primary,
+    .secondary,
+    .chip,
+    .icon-button {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--paper-solid);
+      color: var(--ink);
+      min-height: 44px;
+      padding: 10px 16px;
+      box-shadow: 0 2px 0 rgba(0, 0, 0, .02);
+    }
+
+    .primary {
+      background: linear-gradient(135deg, var(--accent), #8d7cff);
+      color: white;
+      border: 0;
+      font-weight: 750;
+    }
+
+    .secondary {
+      font-weight: 700;
+    }
+
+    .motion-stage {
+      min-height: 260px;
+      display: grid;
+      place-items: center;
+      position: relative;
+    }
+
+    .orbit {
+      position: relative;
+      width: min(310px, 78vw);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, .93) 0 27%, transparent 28%),
+        conic-gradient(from 120deg, rgba(226, 85, 85, .92), rgba(245, 158, 11, .82), rgba(58, 167, 109, .82), rgba(0, 167, 167, .8), rgba(124, 77, 255, .82), rgba(226, 85, 85, .92));
+      box-shadow: inset 0 0 32px rgba(255, 255, 255, .75), 0 24px 60px rgba(107, 92, 255, .22);
+      animation: slowSpin 18s linear infinite;
+    }
+
+    .orbit::before {
+      content: "🌬️";
+      position: absolute;
+      inset: 34%;
+      display: grid;
+      place-items: center;
+      font-size: 2.7rem;
+      border-radius: 50%;
+      background: var(--paper-solid);
+      animation: breathe 5.6s ease-in-out infinite;
+    }
+
+    .floaty {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
+      background: var(--paper-solid);
+      border: 1px solid var(--line);
+      box-shadow: var(--small-shadow);
+      font-size: 2rem;
+    }
+
+    .f1 {
+      top: 16px;
+      left: 12%;
+      animation: float 5s ease-in-out infinite;
+    }
+
+    .f2 {
+      right: 4%;
+      top: 34%;
+      animation: float 6s ease-in-out .3s infinite;
+    }
+
+    .f3 {
+      left: 8%;
+      bottom: 15%;
+      animation: float 6.7s ease-in-out .6s infinite;
+    }
+
+    .f4 {
+      right: 18%;
+      bottom: 2%;
+      animation: float 7.4s ease-in-out .9s infinite;
+    }
+
+    @keyframes slowSpin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes breathe {
+
+      0%,
+      100% {
+        transform: scale(.94);
+      }
+
+      50% {
+        transform: scale(1.1);
+      }
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0) rotate(-2deg);
+      }
+
+      50% {
+        transform: translateY(-14px) rotate(3deg);
+      }
+    }
+
+    .controls-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      padding: 10px 0;
+      backdrop-filter: blur(18px);
+      background: color-mix(in srgb, var(--bg) 76%, transparent);
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--paper);
+      box-shadow: var(--small-shadow);
+      padding: 12px;
+    }
+
+    .slider-panel {
+      display: grid;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .slider-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: baseline;
+    }
+
+    .slider-label {
+      font-weight: 800;
+    }
+
+    .slider-value {
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+    }
+
+    .control-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-weight: 750;
+      background: var(--paper-solid);
+    }
+
+    .chip.active {
+      color: white;
+      border-color: transparent;
+    }
+
+    .chip[data-level="hoch"].active {
+      background: var(--high);
+    }
+
+    .chip[data-level="mittel"].active {
+      background: var(--mid);
+    }
+
+    .chip[data-level="tief"].active {
+      background: var(--low);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+      padding: 18px 0 56px;
+    }
+
+    .side {
+      position: sticky;
+      top: 100px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+      box-shadow: var(--small-shadow);
+      padding: 16px;
+    }
+
+    .panel h2,
+    .panel h3 {
+      margin: 0 0 12px;
+    }
+
+    .search {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px 14px;
+      background: var(--paper-solid);
+      color: var(--ink);
+      min-height: 48px;
+    }
+
+    .filters {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .type-btn {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: var(--paper-solid);
+      color: var(--ink);
+      font-weight: 750;
+    }
+
+    .type-btn .count {
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .type-btn.active {
+      outline: 3px solid color-mix(in srgb, var(--accent) 20%, transparent);
+      border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
+    }
+
+    .quick-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .quick-btn {
+      text-align: left;
+      border: 0;
+      padding: 12px;
+      border-radius: 16px;
+      color: white;
+      background: linear-gradient(135deg, #e25555, #f59e0b);
+      box-shadow: var(--small-shadow);
+      font-weight: 800;
+    }
+
+    .quick-btn small {
+      display: block;
+      font-weight: 650;
+      opacity: .9;
+      margin-top: 4px;
+    }
+
+    .content {
+      display: grid;
+      gap: 18px;
+      min-width: 0;
+    }
+
+    .section-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+      box-shadow: var(--small-shadow);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      padding: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .motion-icon {
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: var(--paper-solid);
+      border: 1px solid var(--line);
+      font-size: 2rem;
+      box-shadow: 0 8px 24px rgba(24, 34, 66, .08);
+    }
+
+    .motion-icon.fire {
+      animation: pulseWarm 2.4s ease-in-out infinite;
+    }
+
+    .motion-icon.target {
+      animation: wiggle 4.5s ease-in-out infinite;
+    }
+
+    .motion-icon.cube {
+      animation: cubeDance 4s ease-in-out infinite;
+    }
+
+    .motion-icon.wind {
+      animation: breathe 5.4s ease-in-out infinite;
+    }
+
+    .motion-icon.compass {
+      animation: compass 6s ease-in-out infinite;
+    }
+
+    @keyframes pulseWarm {
+
+      0%,
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(226, 85, 85, .22);
+      }
+
+      50% {
+        transform: scale(1.06);
+        box-shadow: 0 0 0 14px rgba(226, 85, 85, 0);
+      }
+    }
+
+    @keyframes wiggle {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(5px);
+      }
+
+      50% {
+        transform: translateX(-5px);
+      }
+
+      75% {
+        transform: translateX(3px);
+      }
+    }
+
+    @keyframes cubeDance {
+
+      0%,
+      100% {
+        transform: rotate(0deg) scale(1);
+      }
+
+      35% {
+        transform: rotate(8deg) scale(1.06);
+      }
+
+      70% {
+        transform: rotate(-8deg) scale(1.02);
+      }
+    }
+
+    @keyframes compass {
+
+      0%,
+      100% {
+        transform: rotate(-8deg);
+      }
+
+      50% {
+        transform: rotate(8deg);
+      }
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: clamp(1.35rem, 3vw, 2.05rem);
+      letter-spacing: -.035em;
+    }
+
+    .section-title p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .stat {
+      display: grid;
+      place-items: center;
+      min-width: 70px;
+      padding: 8px 10px;
+      border-radius: 16px;
+      background: var(--paper-solid);
+      border: 1px solid var(--line);
+      font-weight: 900;
+    }
+
+    .stat small {
+      display: block;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: .74rem;
+    }
+
+    .skill-grid {
+      padding: 18px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .skill-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--paper-solid);
+      padding: 14px;
+      min-height: 138px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 10px;
+      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+    }
+
+    .skill-card:focus-within,
+    .skill-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--small-shadow);
+      border-color: color-mix(in srgb, var(--accent) 44%, var(--line));
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .skill-emoji {
+      font-size: 1.75rem;
+      line-height: 1;
+    }
+
+    .level-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 99px;
+      margin-top: 5px;
+      flex: 0 0 auto;
+    }
+
+    .level-dot.hoch {
+      background: var(--high);
+    }
+
+    .level-dot.mittel {
+      background: var(--mid);
+    }
+
+    .level-dot.tief {
+      background: var(--low);
+    }
+
+    .skill-name {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.25;
+      letter-spacing: -.01em;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-self: end;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 4px 8px;
+      color: var(--muted);
+      font-size: .78rem;
+      font-weight: 750;
+    }
+
+    .pill.anti {
+      color: var(--anti);
+    }
+
+    .pill.distract {
+      color: var(--distract);
+    }
+
+    .pill.relax {
+      color: var(--relax);
+    }
+
+    .pill.solve {
+      color: var(--solve);
+    }
+
+    .empty {
+      padding: 24px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--paper-solid);
+      padding: 0;
+      overflow: hidden;
+    }
+
+    details+details {
+      margin-top: 10px;
+    }
+
+    summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 14px 16px;
+      font-weight: 850;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::after {
+      content: "＋";
+      color: var(--muted);
+    }
+
+    details[open] summary::after {
+      content: "–";
+    }
+
+    .detail-body {
+      padding: 0 16px 16px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .detail-body ul {
+      margin: 8px 0 0 1.2rem;
+      padding: 0;
+    }
+
+    .footer {
+      color: var(--muted);
+      padding: 20px 0 80px;
+      font-size: .92rem;
+      line-height: 1.5;
+    }
+
+    .mobile-bar {
+      display: none;
+    }
+
+    .no-motion *,
+    .no-motion *::before,
+    .no-motion *::after {
+      animation: none !important;
+      transition: none !important;
+      scroll-behavior: auto !important;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .motion-stage {
+        min-height: 220px;
+        order: -1;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .side {
+        position: static;
+      }
+
+      .skill-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 700px) {
+      .shell {
+        width: min(100% - 18px, 1180px);
+      }
+
+      .hero {
+        padding-top: 10px;
+      }
+
+      .hero-card {
+        border-radius: 24px;
+        min-height: auto;
+      }
+
+      .hero-grid {
+        padding: 20px;
+        gap: 18px;
+      }
+
+      .orbit {
+        width: min(220px, 70vw);
+      }
+
+      .floaty {
+        width: 52px;
+        height: 52px;
+        font-size: 1.55rem;
+        border-radius: 16px;
+      }
+
+      .controls-wrap {
+        top: auto;
+        bottom: 0;
+        padding: 8px 0 calc(8px + var(--safe-bottom));
+      }
+
+      .controls {
+        grid-template-columns: 1fr;
+        border-radius: 22px;
+      }
+
+      .control-buttons {
+        justify-content: stretch;
+      }
+
+      .chip {
+        flex: 1 1 30%;
+        justify-content: center;
+        padding-inline: 8px;
+        font-size: .92rem;
+      }
+
+      .section-head {
+        grid-template-columns: auto 1fr;
+      }
+
+      .section-head .stat {
+        grid-column: 1 / -1;
+        justify-self: stretch;
+      }
+
+      .skill-grid {
+        grid-template-columns: 1fr;
+        padding: 12px;
+      }
+
+      .skill-card {
+        min-height: 116px;
+      }
+
+      .panel {
+        padding: 14px;
+      }
+
+      .mobile-bar {
+        display: grid;
+        position: fixed;
+        right: 10px;
+        bottom: calc(116px + var(--safe-bottom));
+        z-index: 40;
+        gap: 8px;
+      }
+
+      .icon-button {
+        width: 48px;
+        height: 48px;
+        padding: 0;
+        box-shadow: var(--small-shadow);
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+        color: #111827;
+      }
+
+      .hero-actions,
+      .controls-wrap,
+      .side,
+      .mobile-bar,
+      .footer .screen-only {
+        display: none !important;
+      }
+
+      .shell {
+        width: 100%;
+      }
+
+      .hero-card,
+      .section-card,
+      .panel,
+      .skill-card,
+      details {
+        box-shadow: none;
+        background: white;
+        border-color: #d1d5db;
+      }
+
+      .layout {
+        display: block;
+        padding: 0;
+      }
+
+      .content {
+        gap: 12px;
+      }
+
+      .skill-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding: 12px;
+      }
+
+      .skill-card {
+        break-inside: avoid;
+        min-height: auto;
+      }
+
+      .motion-stage {
+        display: none;
+      }
+
+      .section-card {
+        break-inside: avoid;
+        margin-bottom: 12px;
+      }
+
+      details {
+        break-inside: avoid;
+      }
+
+      details:not([open]) .detail-body {
+        display: block;
+      }
+
+      summary::after {
+        content: "";
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="controls-wrap">
+    <div class="shell">
+      <section class="controls" aria-label="Filter">
+        <div class="slider-panel">
+          <div class="slider-top">
+            <label class="slider-label" for="tension">Aktuelle Anspannung</label>
+            <output class="slider-value" id="tensionValue" for="tension">50 % · mittel</output>
+          </div>
+          <input type="range" id="tension" min="0" max="100" value="50" step="5" aria-describedby="tensionValue">
+        </div>
+        <div class="control-buttons" role="group" aria-label="Anspannungsbereich wählen">
+          <button class="chip" type="button" data-level="tief">🌿 0–30</button>
+          <button class="chip active" type="button" data-level="mittel">🎯 30–70</button>
+          <button class="chip" type="button" data-level="hoch">🔥 ab 70</button>
+          <button class="chip" type="button" id="allLevels">✨ Alle</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <main class="shell layout" id="skills">
+    <aside class="side" aria-label="Suche und Schnellzugriff">
+      <section class="panel">
+        <h2>🔎 Suchen</h2>
+        <label class="visually-hidden" for="search">Skill suchen</label>
+        <input class="search" id="search" type="search" placeholder="z.B. Atem, Kälte, Rubik…" autocomplete="off">
+        <div class="filters" id="typeFilters" aria-label="Skillarten filtern"></div>
+      </section>
+
+      <section class="panel" id="emergencyPanel">
+        <h2>🚨 Notfallmodus</h2>
+        <p style="color:var(--muted);line-height:1.45;margin-top:-4px">Wenige, klare Optionen für sehr hohe Anspannung.
+        </p>
+        <div class="quick-grid" id="quickGrid"></div>
+      </section>
+
+      <section class="panel">
+        <h2>⚙️ Ansicht</h2>
+        <div class="filters">
+          <button class="type-btn" type="button" id="toggleMotion"><span>🎞️ Animationen</span><span
+              class="count">ein</span></button>
+          <button class="type-btn" type="button" id="printBtn"><span>🖨️ Drucken / PDF</span><span
+              class="count">CSS</span></button>
+        </div>
+      </section>
+    </aside>
+
+    <section class="content">
+      <section class="section-card" aria-labelledby="introTitle">
+        <div class="section-head">
+          <div class="motion-icon wind">🌬️</div>
+          <div class="section-title">
+            <h2 id="introTitle">Kurz einordnen</h2>
+            <p>Skills helfen vor allem, Krisen auszuhalten, unangenehme Gefühle zu überstehen und schwierige Situationen
+              nicht noch schlimmer zu machen.</p>
+          </div>
+          <div class="stat"><span id="visibleCount">0</span><small>Skills</small></div>
+        </div>
+        <div style="padding:18px">
+          <details>
+            <summary>Wann Skills einsetzen?</summary>
+            <div class="detail-body">
+              <ul>
+                <li>Wenn die Anspannung hoch ist und du die Situation zuerst überstehen musst.</li>
+                <li>Wenn sich eine Situation gerade nicht verändern lässt.</li>
+                <li>Wenn du vermeiden willst, die Situation durch impulsives Handeln zu verschlimmern.</li>
+              </ul>
+            </div>
+          </details>
+          <details>
+            <summary>Wann nicht als Hauptwerkzeug?</summary>
+            <div class="detail-body">
+              <ul>
+                <li>Nicht um komplexe Probleme vollständig zu lösen.</li>
+                <li>Nicht um wichtige Lebensentscheidungen in Hochspannung zu treffen.</li>
+                <li>Nicht als Ersatz für Unterstützung, wenn akute Gefahr besteht.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section class="section-card" id="resultSection" aria-labelledby="resultTitle">
+        <div class="section-head">
+          <div class="motion-icon target" id="resultIcon">🎯</div>
+          <div class="section-title">
+            <h2 id="resultTitle">Skills für mittlere Anspannung</h2>
+            <p id="resultHint">Aktive Ablenkung, Kontakt, Bewegung und erste Beruhigung.</p>
+          </div>
+          <div class="stat"><span id="sectionCount">0</span><small>gefiltert</small></div>
+        </div>
+        <div class="skill-grid" id="skillGrid"></div>
+      </section>
+
+      <section class="section-card" aria-labelledby="typesTitle">
+        <div class="section-head">
+          <div class="motion-icon compass">🧭</div>
+          <div class="section-title">
+            <h2 id="typesTitle">Skillarten</h2>
+            <p>Die Kategorien bleiben bewusst einfach, damit man später auch von Hand schnell etwas ändern kann.</p>
+          </div>
+        </div>
+        <div style="padding:18px">
+          <details open>
+            <summary>🎯 Ablenkende Skills</summary>
+            <div class="detail-body">Lenken den Fokus bewusst weg von belastenden Gedanken oder Gefühlen. Gut für
+              Grübelschleifen und mentale Kurzpausen.</div>
+          </details>
+          <details>
+            <summary>🌶️ Anti-Craving Skills</summary>
+            <div class="detail-body">Starke, interessante Reize, um Suchtdruck oder sehr intensive Gefühle zu
+              überstehen, bis die Intensität sinkt.</div>
+          </details>
+          <details>
+            <summary>🌬️ Entspannende Skills</summary>
+            <div class="detail-body">Reduzieren innere Anspannung, Stress oder Unruhe. Sie verbinden Körper und Geist
+              und fördern Stabilität.</div>
+          </details>
+          <details>
+            <summary>🧠 Lösungsorientierte Skills</summary>
+            <div class="detail-body">Eher längerfristig: Reflexion, Struktur, Perspektivwechsel und positive
+              Umstrukturierung.</div>
+          </details>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div class="mobile-bar" aria-label="Schnellzugriff mobil">
+    <button class="icon-button" type="button" data-scroll="#skills" title="Zu den Skills">⬆️</button>
+    <button class="icon-button" type="button" id="panicFloat" title="Notfallmodus">🚨</button>
+  </div>
+
+  <footer class="shell footer">
+    <p>Hinweis: Diese Übersicht ist als Hilfe zur Orientierung gedacht. Bei akuter Selbst- oder Fremdgefährdung sollte
+      sofort lokale Notfallhilfe oder eine vertraute Fachperson kontaktiert werden.</p>
+  </footer>
+
+  <script>
+    const skills = [
+      {
+        "level": "hoch",
+        "type": "Anti-Craving",
+        "name": "Chilischote",
+        "tags": [
+          "Geschmack",
+          "starker Reiz"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Anti-Craving",
+        "name": "Scharfes Bonbon",
+        "tags": [
+          "Geschmack",
+          "starker Reiz"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Anti-Craving",
+        "name": "Scharfer Senf",
+        "tags": [
+          "Geschmack",
+          "starker Reiz"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Anti-Craving",
+        "name": "Tabascosauce",
+        "tags": [
+          "Geschmack",
+          "starker Reiz"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Anti-Craving",
+        "name": "Wasabi-Paste",
+        "tags": [
+          "Geschmack",
+          "starker Reiz"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Anti-Craving",
+        "name": "Frische Zitrone",
+        "tags": [
+          "Geschmack",
+          "starker Reiz"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Anti-Craving",
+        "name": "Riechsalz",
+        "tags": [
+          "Geruch",
+          "starker Reiz"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Anti-Craving",
+        "name": "Ammoniak / Tigerbalm riechen",
+        "tags": [
+          "Geruch",
+          "starker Reiz"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Anti-Craving",
+        "name": "Glacé schnell essen",
+        "tags": [
+          "Kälte",
+          "Geschmack"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Anti-Craving",
+        "name": "Pfefferkorn",
+        "tags": [
+          "Geschmack",
+          "Fokus"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Anti-Craving",
+        "name": "Brausepulver",
+        "tags": [
+          "Geschmack",
+          "Körperreiz"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Anti-Craving",
+        "name": "Bitterstoffe",
+        "tags": [
+          "Geschmack"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Anti-Craving",
+        "name": "Nelke",
+        "tags": [
+          "Geruch",
+          "Geschmack"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Anti-Craving",
+        "name": "Gewürze",
+        "tags": [
+          "Geruch",
+          "Geschmack"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Anti-Craving",
+        "name": "Duftöle / Essenzen / Parfum",
+        "tags": [
+          "Geruch",
+          "Fokus"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Anti-Craving",
+        "name": "Schmerzpunkte festdrücken",
+        "tags": [
+          "Körperreiz",
+          "starker Reiz"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Anti-Craving",
+        "name": "Schreien, z.B. im Wald",
+        "tags": [
+          "Ausdruck",
+          "Bewegung"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Anti-Craving",
+        "name": "Kalte Dusche / Eisbad",
+        "tags": [
+          "Kälte",
+          "Körperreiz"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Entspannend",
+        "name": "Schlafen",
+        "tags": [
+          "Ruhe",
+          "Regeneration"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Entspannend",
+        "name": "Wandern",
+        "tags": [
+          "Bewegung",
+          "Natur"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Entspannend",
+        "name": "Annehmen, Anfeuern, Abreiten",
+        "tags": [
+          "Akzeptanz",
+          "Stabilisieren"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Entspannend",
+        "name": "Sich massieren lassen",
+        "tags": [
+          "Körper",
+          "Berührung"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Entspannend",
+        "name": "Wechseldusche nehmen (warm/kalt)",
+        "tags": [
+          "Körperreiz",
+          "Wasser"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Lösungsorientiert",
+        "name": "Craving-Protokoll",
+        "tags": [
+          "Reflexion",
+          "Schreiben"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Lösungsorientiert",
+        "name": "Notfallkoffer",
+        "tags": [
+          "Vorbereiten",
+          "Sicherheit"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Lösungsorientiert",
+        "name": "Skillskette",
+        "tags": [
+          "Plan",
+          "Struktur"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Lösungsorientiert",
+        "name": "Schlafhygiene",
+        "tags": [
+          "Routine",
+          "Regeneration"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Lösungsorientiert",
+        "name": "Gesunde Ernährung",
+        "tags": [
+          "Körper",
+          "Routine"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Lösungsorientiert",
+        "name": "Beten",
+        "tags": [
+          "Besinnung",
+          "Ritual"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Lösungsorientiert",
+        "name": "Die Aufmerksamkeit auf positive Aspekte richten",
+        "tags": [
+          "Fokus",
+          "Umstrukturierung"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Lösungsorientiert",
+        "name": "Pro-&-Contra-Liste schreiben",
+        "tags": [
+          "Schreiben",
+          "Klarheit"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Lösungsorientiert",
+        "name": "Andere unterstützen / helfen",
+        "tags": [
+          "Kontakt",
+          "Sinn"
+        ]
+      },
+      {
+        "level": "hoch",
+        "type": "Lösungsorientiert",
+        "name": "Meditation",
+        "tags": [
+          "Ruhe",
+          "Achtsamkeit"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Kitzeln mit einer Feder",
+        "tags": [
+          "Körperreiz",
+          "leicht"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Barfuss laufen",
+        "tags": [
+          "Körper",
+          "Natur"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Bildbetrachtung",
+        "tags": [
+          "Sehen",
+          "Fokus"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Rhythmen auf den Körper klopfen",
+        "tags": [
+          "Rhythmus",
+          "Körper"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Stricken",
+        "tags": [
+          "Kreativ",
+          "Hände"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Nähen",
+        "tags": [
+          "Kreativ",
+          "Hände"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Häkeln",
+        "tags": [
+          "Kreativ",
+          "Hände"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Basteln",
+        "tags": [
+          "Kreativ",
+          "Hände"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Putzen",
+        "tags": [
+          "Aktivität",
+          "Ordnung"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Malen nach Zahlen",
+        "tags": [
+          "Kreativ",
+          "Fokus"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Aufräumen / Sortieren",
+        "tags": [
+          "Ordnung",
+          "Aktivität"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Wohnung umdekorieren",
+        "tags": [
+          "Kreativ",
+          "Aktivität"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Zeit mit dem Haustier verbringen",
+        "tags": [
+          "Kontakt",
+          "Beruhigung"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "In 7er-Schritten rückwärts von 100 zählen",
+        "tags": [
+          "Denken",
+          "Fokus"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Eine Comedyshow schauen",
+        "tags": [
+          "Humor",
+          "Ablenkung"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Mit nassen Socken herumlaufen",
+        "tags": [
+          "Körperreiz",
+          "ungewöhnlich"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Unterhalten / Chatten / Telefonieren",
+        "tags": [
+          "Kontakt",
+          "Kommunikation"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Liegestütze (so viele wie möglich)",
+        "tags": [
+          "Sport",
+          "Auspowern"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Plank (so lange wie möglich)",
+        "tags": [
+          "Sport",
+          "Fokus"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Kräftig in ein Kissen boxen",
+        "tags": [
+          "Körper",
+          "Ausdruck"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Mit einem Freund / einer Freundin reden",
+        "tags": [
+          "Kontakt",
+          "Unterstützung"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Ein Eisbad nehmen (mind. 3 min)",
+        "tags": [
+          "Kälte",
+          "Körperreiz"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Notfallkontakt anrufen",
+        "tags": [
+          "Kontakt",
+          "Sicherheit"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Steinchen im Schuh",
+        "tags": [
+          "Körperreiz",
+          "Fokus"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Eiswürfel auf die Haut",
+        "tags": [
+          "Kälte",
+          "Körperreiz"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Zwicken mit Wäscheklammer",
+        "tags": [
+          "Körperreiz",
+          "Fokus"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Gummiband ans Handgelenk schnipsen",
+        "tags": [
+          "Körperreiz",
+          "Fokus"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Heisse-Stuhl-Technik",
+        "tags": [
+          "Reflexion",
+          "Perspektive"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Coolpack",
+        "tags": [
+          "Kälte",
+          "Körperreiz"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Heisses Bad",
+        "tags": [
+          "Wärme",
+          "Körper"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Massageroller",
+        "tags": [
+          "Körper",
+          "Berührung"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Sport",
+        "tags": [
+          "Bewegung",
+          "Auspowern"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Auspowern (Liegestütze, Klimmzüge, Jumping Squats)",
+        "tags": [
+          "Sport",
+          "Energie"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Gamen",
+        "tags": [
+          "Fokus",
+          "Ablenkung"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Ablenkend",
+        "name": "Phantasiereise / innerer sicherer Ort",
+        "tags": [
+          "Vorstellung",
+          "Beruhigung"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Entspannend",
+        "name": "Atemübungen",
+        "tags": [
+          "Atmung",
+          "Ruhe"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Entspannend",
+        "name": "Muskeln anspannen und loslassen (PMR)",
+        "tags": [
+          "Körper",
+          "Entspannung"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Entspannend",
+        "name": "Fotos von schönen Erlebnissen anschauen",
+        "tags": [
+          "Erinnerung",
+          "positiv"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Entspannend",
+        "name": "Eine Diashow erstellen",
+        "tags": [
+          "Erinnerung",
+          "Kreativ"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Entspannend",
+        "name": "Emotionen laut benennen",
+        "tags": [
+          "Wahrnehmen",
+          "Sprache"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Entspannend",
+        "name": "Meditation",
+        "tags": [
+          "Ruhe",
+          "Achtsamkeit"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Entspannend",
+        "name": "Yoga",
+        "tags": [
+          "Körper",
+          "Ruhe"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Lösungsorientiert",
+        "name": "(Radikale) Akzeptanz",
+        "tags": [
+          "Akzeptanz",
+          "Klarheit"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Lösungsorientiert",
+        "name": "Innere Bereitschaft",
+        "tags": [
+          "Haltung",
+          "Akzeptanz"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Lösungsorientiert",
+        "name": "Tagebuch führen",
+        "tags": [
+          "Schreiben",
+          "Reflexion"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Lösungsorientiert",
+        "name": "Sich aktuelle Gefühlslage notieren",
+        "tags": [
+          "Schreiben",
+          "Wahrnehmen"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Lösungsorientiert",
+        "name": "3x5-Aufgabe (sehen, hören & spüren)",
+        "tags": [
+          "Achtsamkeit",
+          "Sinne"
+        ]
+      },
+      {
+        "level": "mittel",
+        "type": "Lösungsorientiert",
+        "name": "To-do-Liste schreiben",
+        "tags": [
+          "Plan",
+          "Struktur"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Ablenkend",
+        "name": "Lieblingshörspiel",
+        "tags": [
+          "Hören",
+          "Ruhe"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Ablenkend",
+        "name": "Musik (hören, singen, machen)",
+        "tags": [
+          "Hören",
+          "Kreativ"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Ablenkend",
+        "name": "Rätsel lösen",
+        "tags": [
+          "Denken",
+          "Fokus"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Ablenkend",
+        "name": "Geduldspiele (Rubik’s Cube)",
+        "tags": [
+          "Denken",
+          "Geduld"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Ablenkend",
+        "name": "Schwierige Worte buchstabieren",
+        "tags": [
+          "Denken",
+          "Sprache"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Ablenkend",
+        "name": "Mit der anderen Hand schreiben",
+        "tags": [
+          "Körper",
+          "Fokus"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Ablenkend",
+        "name": "Lesen",
+        "tags": [
+          "Ruhe",
+          "Fokus"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Ablenkend",
+        "name": "Ein Gedicht / Lied auswendig lernen",
+        "tags": [
+          "Sprache",
+          "Gedächtnis"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Ablenkend",
+        "name": "Balancieren",
+        "tags": [
+          "Körper",
+          "Fokus"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Ablenkend",
+        "name": "Reparierarbeiten",
+        "tags": [
+          "Hände",
+          "Aktivität"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Ablenkend",
+        "name": "Kochen",
+        "tags": [
+          "Kreativ",
+          "Sinne"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Ablenkend",
+        "name": "Achtsames Essen üben",
+        "tags": [
+          "Achtsamkeit",
+          "Sinne"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Ablenkend",
+        "name": "Puzzle machen",
+        "tags": [
+          "Denken",
+          "Geduld"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Ablenkend",
+        "name": "Sudoku / Mathematikaufgaben lösen",
+        "tags": [
+          "Denken",
+          "Fokus"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Ablenkend",
+        "name": "Kreuzworträtsel lösen / selbst erstellen",
+        "tags": [
+          "Denken",
+          "Sprache"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Ablenkend",
+        "name": "Fotografieren",
+        "tags": [
+          "Sehen",
+          "Kreativ"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Ablenkend",
+        "name": "Wolken beobachten, wie sie vorbeiziehen",
+        "tags": [
+          "Natur",
+          "Sehen"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Ablenkend",
+        "name": "Natürliche Gerüche riechen (Regen, Gras, Blumen etc.)",
+        "tags": [
+          "Geruch",
+          "Natur"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Entspannend",
+        "name": "Atemübungen",
+        "tags": [
+          "Atmung",
+          "Ruhe"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Entspannend",
+        "name": "Zeiger eines Metronoms beobachten",
+        "tags": [
+          "Rhythmus",
+          "Sehen"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Entspannend",
+        "name": "Waschmaschine in Bewegung beobachten",
+        "tags": [
+          "Rhythmus",
+          "Sehen"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Entspannend",
+        "name": "Augen rhythmisch bewegen",
+        "tags": [
+          "Körper",
+          "Rhythmus"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Entspannend",
+        "name": "Natürliche Geräusche hören (Wellen, Vögel, Regen)",
+        "tags": [
+          "Hören",
+          "Natur"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Entspannend",
+        "name": "Leichtes Lächeln",
+        "tags": [
+          "Körper",
+          "Haltung"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Entspannend",
+        "name": "Sterne anschauen",
+        "tags": [
+          "Natur",
+          "Sehen"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Entspannend",
+        "name": "Brennendes Feuer betrachten",
+        "tags": [
+          "Sehen",
+          "Ruhe"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Entspannend",
+        "name": "Achtsam spazieren",
+        "tags": [
+          "Achtsamkeit",
+          "Bewegung"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Entspannend",
+        "name": "Frische Kräuter erraten (auch barfuss)",
+        "tags": [
+          "Geruch",
+          "Sinne"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Lösungsorientiert",
+        "name": "Früchte / Blumen riechen",
+        "tags": [
+          "Geruch",
+          "Sinne"
+        ]
+      },
+      {
+        "level": "tief",
+        "type": "Lösungsorientiert",
+        "name": "Optimale Körperhaltung einnehmen",
+        "tags": [
+          "Körper",
+          "Haltung"
+        ]
+      }
+    ];
+
+    const levelInfo = {
+      all: { title: "Alle Skills", hint: "Suchen, filtern und passende Optionen vergleichen.", icon: "✨", motion: "compass" },
+      hoch: { title: "Skills für sehr hohe Anspannung", hint: "Wenig lesen. Schnell einen starken, sicheren Reiz wählen und die Welle überstehen.", icon: "🔥", motion: "fire" },
+      mittel: { title: "Skills für mittlere Anspannung", hint: "Aktive Ablenkung, Kontakt, Bewegung und erste Beruhigung.", icon: "🎯", motion: "target" },
+      tief: { title: "Skills für tiefe Anspannung", hint: "Ruhige Übungen, Fokus, Achtsamkeit und kleine Denkaufgaben.", icon: "🧩", motion: "cube" }
+    };
+    const typeInfo = {
+      all: { label: "Alle Arten", icon: "✨", cls: "" },
+      "Ablenkend": { label: "Ablenkend", icon: "🎯", cls: "distract" },
+      "Anti-Craving": { label: "Anti-Craving", icon: "🌶️", cls: "anti" },
+      "Entspannend": { label: "Entspannend", icon: "🌬️", cls: "relax" },
+      "Lösungsorientiert": { label: "Lösungsorientiert", icon: "🧠", cls: "solve" }
+    };
+    const quickSkills = [
+      { name: "Kalte Dusche / Eisbad", note: "starker Kältereiz", query: "Kalte Dusche" },
+      { name: "Frische Zitrone", note: "Geschmack fokussieren", query: "Frische Zitrone" },
+      { name: "Schreien, z.B. im Wald", note: "Druck rauslassen", query: "Schreien" },
+      { name: "Notfallkontakt anrufen", note: "nicht alleine bleiben", query: "Notfallkontakt" },
+      { name: "Atemübungen", note: "langsam stabilisieren", query: "Atemübungen" }
+    ];
+    let state = { level: "mittel", type: "all", query: "" };
+
+    const els = {
+      tension: document.querySelector('#tension'),
+      tensionValue: document.querySelector('#tensionValue'),
+      levelButtons: [...document.querySelectorAll('[data-level]')],
+      allLevels: document.querySelector('#allLevels'),
+      typeFilters: document.querySelector('#typeFilters'),
+      search: document.querySelector('#search'),
+      grid: document.querySelector('#skillGrid'),
+      visibleCount: document.querySelector('#visibleCount'),
+      sectionCount: document.querySelector('#sectionCount'),
+      resultTitle: document.querySelector('#resultTitle'),
+      resultHint: document.querySelector('#resultHint'),
+      resultIcon: document.querySelector('#resultIcon'),
+      quickGrid: document.querySelector('#quickGrid'),
+      toggleMotion: document.querySelector('#toggleMotion'),
+      printBtn: document.querySelector('#printBtn'),
+      panicTop: document.querySelector('#panicTop'),
+      panicFloat: document.querySelector('#panicFloat')
+    };
+
+    function levelFromValue(v) {
+      if (v >= 70) return "hoch";
+      if (v >= 30) return "mittel";
+      return "tief";
+    }
+    function valueFromLevel(level) { return level === "hoch" ? 80 : level === "mittel" ? 50 : 20; }
+    function levelLabel(level) { return level === "hoch" ? "sehr hoch" : level === "mittel" ? "mittel" : level === "tief" ? "tief" : "alle"; }
+    function escapeHTML(value) {
+      return String(value).replace(/[&<>"']/g, s => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[s]));
+    }
+    function skillEmoji(skill) {
+      const n = skill.name.toLowerCase();
+      const t = skill.type;
+      if (n.includes('rubik') || n.includes('puzzle') || n.includes('rätsel') || n.includes('sudoku') || n.includes('kreuzwort')) return '🧩';
+      if (n.includes('atem')) return '🌬️';
+      if (n.includes('eis') || n.includes('kalt') || n.includes('coolpack')) return '🧊';
+      if (n.includes('chili') || n.includes('scharf') || n.includes('wasabi') || n.includes('tabasco') || n.includes('senf')) return '🌶️';
+      if (n.includes('zitrone') || n.includes('früchte')) return '🍋';
+      if (n.includes('wandern') || n.includes('spazieren') || n.includes('barfuss')) return '🥾';
+      if (n.includes('musik') || n.includes('hörspiel') || n.includes('geräusche')) return '🎧';
+      if (n.includes('telefon') || n.includes('freund') || n.includes('kontakt') || n.includes('unterhalten')) return '📞';
+      if (n.includes('schreiben') || n.includes('tagebuch') || n.includes('liste') || n.includes('pro-&-contra') || n.includes('notieren')) return '📝';
+      if (n.includes('sport') || n.includes('liegestütze') || n.includes('plank') || n.includes('auspowern') || n.includes('yoga')) return '🏃';
+      if (n.includes('wolken')) return '☁️';
+      if (n.includes('sterne')) return '✨';
+      if (n.includes('feuer')) return '🔥';
+      if (n.includes('kräuter') || n.includes('blumen') || n.includes('gras')) return '🌿';
+      if (n.includes('haustier')) return '🐾';
+      if (n.includes('kochen') || n.includes('essen')) return '🍲';
+      if (t === 'Anti-Craving') return '🌶️';
+      if (t === 'Entspannend') return '🌬️';
+      if (t === 'Lösungsorientiert') return '🧠';
+      return '🎯';
+    }
+    function normalized(s) { return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+    function filteredSkills() {
+      const q = normalized(state.query.trim());
+      return skills.filter(skill => {
+        const levelOk = state.level === 'all' || skill.level === state.level;
+        const typeOk = state.type === 'all' || skill.type === state.type;
+        const hay = normalized([skill.name, skill.type, skill.level, ...skill.tags].join(' '));
+        const queryOk = !q || hay.includes(q);
+        return levelOk && typeOk && queryOk;
+      });
+    }
+    function renderTypeFilters() {
+      const keys = ['all', 'Ablenkend', 'Anti-Craving', 'Entspannend', 'Lösungsorientiert'];
+      const base = skills.filter(s => state.level === 'all' || s.level === state.level);
+      els.typeFilters.innerHTML = keys.map(key => {
+        const info = typeInfo[key];
+        const count = key === 'all' ? base.length : base.filter(s => s.type === key).length;
+        return `<button class="type-btn ${state.type === key ? 'active' : ''}" type="button" data-type="${escapeHTML(key)}"><span>${info.icon} ${info.label}</span><span class="count">${count}</span></button>`;
+      }).join('');
+      els.typeFilters.querySelectorAll('[data-type]').forEach(btn => btn.addEventListener('click', () => {
+        state.type = btn.dataset.type;
+        render();
+      }));
+    }
+    function renderQuick() {
+      els.quickGrid.innerHTML = quickSkills.map(item => `
+    <button class="quick-btn" type="button" data-quick="${escapeHTML(item.query)}">
+      ${escapeHTML(item.name)}
+      <small>${escapeHTML(item.note)}</small>
+    </button>
+  `).join('');
+      els.quickGrid.querySelectorAll('[data-quick]').forEach(btn => btn.addEventListener('click', () => {
+        state.query = btn.dataset.quick;
+        state.level = 'all';
+        els.search.value = state.query;
+        document.querySelector('#skills').scrollIntoView({ behavior: 'smooth' });
+        render();
+      }));
+    }
+    function renderHeader() {
+      const info = levelInfo[state.level];
+      els.resultTitle.textContent = info.title;
+      els.resultHint.textContent = info.hint;
+      els.resultIcon.textContent = info.icon;
+      els.resultIcon.className = 'motion-icon ' + info.motion;
+      els.levelButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.level === state.level));
+      els.allLevels.classList.toggle('active', state.level === 'all');
+      if (state.level !== 'all') {
+        els.tension.value = valueFromLevel(state.level);
+        els.tensionValue.textContent = `${els.tension.value} % · ${levelLabel(state.level)}`;
+      } else {
+        els.tensionValue.textContent = `alle Bereiche`;
+      }
+    }
+    function renderCards(list) {
+      if (!list.length) {
+        els.grid.innerHTML = `<div class="empty">Keine passenden Skills gefunden. Suche oder Filter ändern.</div>`;
+        return;
+      }
+      els.grid.innerHTML = list.map(skill => {
+        const type = typeInfo[skill.type] || typeInfo.all;
+        const tags = skill.tags.slice(0, 3).map(tag => `<span class="pill">${escapeHTML(tag)}</span>`).join('');
+        return `<article class="skill-card" tabindex="0" aria-label="${escapeHTML(skill.name)}">
+      <div class="card-top"><span class="skill-emoji" aria-hidden="true">${skillEmoji(skill)}</span><span class="level-dot ${skill.level}" title="${escapeHTML(levelLabel(skill.level))}"></span></div>
+      <h3 class="skill-name">${escapeHTML(skill.name)}</h3>
+      <div class="meta"><span class="pill ${type.cls}">${type.icon} ${escapeHTML(type.label)}</span><span class="pill">${escapeHTML(levelLabel(skill.level))}</span>${tags}</div>
+    </article>`;
+      }).join('');
+    }
+    function render() {
+      renderHeader();
+      renderTypeFilters();
+      const list = filteredSkills();
+      els.visibleCount.textContent = list.length;
+      els.sectionCount.textContent = list.length;
+      renderCards(list);
+    }
+
+    els.tension.addEventListener('input', () => {
+      state.level = levelFromValue(Number(els.tension.value));
+      els.tensionValue.textContent = `${els.tension.value} % · ${levelLabel(state.level)}`;
+      render();
+    });
+    els.levelButtons.forEach(btn => btn.addEventListener('click', () => {
+      state.level = btn.dataset.level;
+      render();
+    }));
+    els.allLevels.addEventListener('click', () => { state.level = 'all'; render(); });
+    els.search.addEventListener('input', () => { state.query = els.search.value; render(); });
+    els.printBtn.addEventListener('click', () => window.print());
+    function toggleEmergency() {
+      state.level = 'hoch';
+      state.type = 'all';
+      state.query = '';
+      els.search.value = '';
+      render();
+      document.querySelector('#emergencyPanel').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    els.panicTop.addEventListener('click', toggleEmergency);
+    els.panicFloat.addEventListener('click', toggleEmergency);
+    document.querySelectorAll('[data-scroll]').forEach(btn => btn.addEventListener('click', () => {
+      document.querySelector(btn.dataset.scroll).scrollIntoView({ behavior: 'smooth' });
+    }));
+    els.toggleMotion.addEventListener('click', () => {
+      document.body.classList.toggle('no-motion');
+      const off = document.body.classList.contains('no-motion');
+      els.toggleMotion.querySelector('.count').textContent = off ? 'aus' : 'ein';
+    });
+    renderQuick();
+    render();
+  </script>
+</body>
+
+</html>
