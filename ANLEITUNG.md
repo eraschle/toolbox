@@ -1,0 +1,93 @@
+# Skillsliste pflegen — Anleitung
+
+Diese Anleitung erklärt, wie man die Inhalte der Skillsliste ändert **ohne
+Programmierkenntnisse**. Bearbeitet wird nur eine Excel-Datei; die fertige
+Webseite wird danach per Doppelklick neu erzeugt.
+
+## Überblick
+
+| Datei | Wofür |
+|---|---|
+| **`skills_daten.xlsx`** | Hier werden die Inhalte bearbeitet (das ist die einzige Datei, die du anfasst). |
+| **`build.bat`** | Doppelklick → erzeugt die Webseite neu. |
+| `Skillsliste.html` | Das **Ergebnis** (die fertige Webseite). Wird automatisch überschrieben — **nicht von Hand bearbeiten.** |
+| `template.html`, `build.py` | Technik dahinter — bitte nicht verändern. |
+
+## Einmalig: „uv" installieren
+
+Das Erzeugen der Webseite braucht das kleine Hilfsprogramm **uv** (nur **einmal**
+installieren, danach nie wieder).
+
+1. Windows-Startmenü → **PowerShell** öffnen.
+2. Diesen Befehl einfügen und Enter drücken:
+
+   ```powershell
+   powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+   ```
+
+3. PowerShell schliessen. Fertig.
+
+> Die allererste Ausführung von `build.bat` lädt danach noch ein kleines
+> Zusatzpaket nach — das dauert wenige Sekunden und passiert nur einmal.
+
+## So änderst du Inhalte
+
+1. **`skills_daten.xlsx` in Excel öffnen.**
+2. Änderungen vornehmen (siehe unten) und **speichern** (Format **Excel-Arbeitsmappe `.xlsx`** beibehalten — **nicht** als CSV speichern!).
+3. **`build.bat` doppelklicken.** Es erscheint kurz ein schwarzes Fenster mit
+   `✅ Skillsliste.html wurde neu erstellt.`
+4. `Skillsliste.html` im Browser öffnen und prüfen.
+
+### Das Blatt `Skills` (Haupt-Tabelle)
+
+Jede Zeile ist ein Skill. Spalten:
+
+| Spalte | Bedeutung |
+|---|---|
+| **Stufe** | `Hoch`, `Mittel` oder `Tief` (Auswahl per Klappliste in der Zelle). |
+| **Kategorie** | Name der Kategorie, z. B. `Anti-Craving`. Muss im Blatt **Kategorien** existieren. |
+| **Emoji** | Ein Emoji, z. B. 🌶️ (Emoji-Auswahl mit Tastenkombination **Windows-Taste + .** (Punkt)). |
+| **Titel** | Kurzer Name des Skills. |
+| **Beschreibung** | Der erklärende Text. |
+| **Tipp** | Optionaler Zusatztipp (darf leer sein). |
+
+- **Neue Skill hinzufügen:** einfach eine neue Zeile ausfüllen.
+- **Skill entfernen:** die ganze Zeile löschen.
+- **Reihenfolge ändern:** Zeilen verschieben — die Reihenfolge in Excel ist die
+  Reihenfolge auf der Webseite (innerhalb derselben Stufe und Kategorie).
+
+### Das Blatt `Stufen` (selten ändern)
+
+Die drei Anspannungs-Stufen mit Überschrift, Bereich, Icon, Einleitungstext und
+Farben. Die drei Zeilen (`Hoch`, `Mittel`, `Tief`) bitte **nicht löschen**.
+
+### Das Blatt `Kategorien` (selten ändern)
+
+Legt fest, welche Kategorie-Tabs es je Stufe gibt, in welcher **Reihenfolge** und
+mit welchem **Icon**.
+
+- **Neue Kategorie:** zuerst hier eine Zeile anlegen (Stufe + Name + Icon),
+  danach kann sie im Blatt `Skills` verwendet werden.
+
+## Wenn etwas nicht stimmt
+
+`build.bat` prüft die Daten und sagt **genau**, was zu korrigieren ist — z. B.:
+
+```
+❌ Build abgebrochen – bitte folgendes in skills_daten.xlsx korrigieren:
+   • Blatt 'Skills', Zeile 12: Kategorie 'Bewegun' existiert in Stufe 'Mittel' nicht ...
+```
+
+Korrigiere die genannte Zeile, speichere und starte `build.bat` erneut.
+
+## Wichtige Regeln (kurz)
+
+- ✅ Nur **`skills_daten.xlsx`** bearbeiten.
+- ✅ Immer als **`.xlsx`** speichern (niemals als CSV — das zerstört die Emoji!).
+- ⛔ Blatt-Namen und die **Kopfzeile** (erste Zeile) nicht umbenennen.
+- ⛔ `Skillsliste.html`, `template.html`, `build.py` nicht von Hand ändern.
+
+## Veröffentlichen
+
+Nach dem Bauen ist `Skillsliste.html` aktuell. Wie die Datei online geht
+(z. B. GitHub Pages), bleibt wie bisher — am Inhalt ändert das nichts.
