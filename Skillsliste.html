@@ -66,6 +66,7 @@ body{font-family:var(--f-b);background:var(--bg);color:var(--text);min-height:10
 .ampel-label:hover{background:rgba(0,0,0,.04);transform:translateX(2px)}
 .ampel-label.aktiv{background:var(--active-h);border-color:var(--active)}
 .al-icon{font-size:1.3rem;line-height:1;flex-shrink:0;width:1.6rem;text-align:center}
+.ampel-label.aktiv .al-icon{animation:pulse 3s ease-in-out infinite}
 .al-title{font-weight:700;font-size:clamp(.8rem,2vw,.92rem);color:var(--text);line-height:1.2}
 .al-bereich{font-size:.72rem;color:var(--muted);margin-left:auto;white-space:nowrap}
 
@@ -73,22 +74,17 @@ body{font-family:var(--f-b);background:var(--bg);color:var(--text);min-height:10
 .wrap{max-width:900px;margin:0 auto;padding:clamp(.7rem,2.5vw,1.5rem) clamp(.7rem,2.5vw,1.4rem)}
 
 /* ══ SEKTION-HEADER ════════════════════════════════════════ */
-.sek-hd{display:flex;align-items:center;justify-content:space-between;gap:1rem;background:linear-gradient(135deg,var(--active) 0%,var(--active-2) 100%);border-radius:var(--r) var(--r) 0 0;padding:clamp(.9rem,2.5vw,1.35rem) clamp(.9rem,2.5vw,1.5rem);transition:background var(--tr);position:relative;overflow:hidden}
+.sek-hd{background:linear-gradient(135deg,var(--active) 0%,var(--active-2) 100%);border-radius:var(--r) var(--r) 0 0;padding:clamp(.6rem,1.8vw,1rem) clamp(.9rem,2.5vw,1.5rem);transition:background var(--tr);position:relative;overflow:hidden}
 .sek-hd::after{content:'';position:absolute;top:-50%;left:-60%;width:40%;height:200%;background:linear-gradient(105deg,transparent 0%,rgba(255,255,255,.13) 50%,transparent 100%);animation:shimmer 4.5s ease-in-out infinite}
 @keyframes shimmer{0%{transform:translateX(0) skewX(-10deg);opacity:0}20%{opacity:1}65%{transform:translateX(420%) skewX(-10deg);opacity:0}100%{transform:translateX(420%) skewX(-10deg);opacity:0}}
-.sek-left{display:flex;flex-direction:column;gap:.12rem;position:relative;z-index:1}
-.sek-lbl{font-size:.66rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6)}
-.sek-title{font-family:var(--f-d);font-size:clamp(1.2rem,3.8vw,1.72rem);color:#fff;line-height:1.1}
-.sek-bereich{font-size:.78rem;color:rgba(255,255,255,.7);margin-top:.08rem}
-.tacho{font-size:clamp(54px,9.5vw,78px);flex-shrink:0;position:relative;z-index:1;animation:pulse 3s ease-in-out infinite;line-height:1}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
 .sek-intro{background:var(--active-h);border-left:4px solid var(--active);border-right:1px solid var(--active);padding:.7rem 1.1rem;font-size:.86rem;font-style:italic;color:var(--text);line-height:1.5;transition:background var(--tr),border-color var(--tr)}
 
 /* ══ KATEGORIE-TABS ════════════════════════════════════════ */
-.kat-tabs{display:flex;gap:.38rem;flex-wrap:wrap;padding:.75rem .95rem;background:var(--active-h);border-left:1px solid var(--active);border-right:1px solid var(--active);transition:background var(--tr),border-color var(--tr)}
-.kat-tab{display:inline-flex;align-items:center;gap:.28rem;padding:.38rem .82rem;border-radius:20px;border:1.5px solid var(--active);background:transparent;color:var(--active);font-family:var(--f-b);font-size:.78rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:background var(--tr),color var(--tr),border-color var(--tr),transform .12s;-webkit-tap-highlight-color:transparent}
-.kat-tab:hover{background:rgba(0,0,0,.05);transform:translateY(-1px)}
-.kat-tab.active{background:var(--active);color:#fff}
+.kat-tabs{display:flex;gap:.38rem;flex-wrap:wrap;position:relative;z-index:1}
+.kat-tab{display:inline-flex;align-items:center;gap:.28rem;padding:.38rem .82rem;border-radius:20px;border:1.5px solid rgba(255,255,255,.6);background:transparent;color:#fff;font-family:var(--f-b);font-size:.78rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s,border-color .15s,transform .12s;-webkit-tap-highlight-color:transparent}
+.kat-tab:hover{background:rgba(255,255,255,.15);transform:translateY(-1px)}
+.kat-tab.active{background:#fff;color:var(--active);border-color:#fff}
 .kat-tab:active{transform:scale(.94)}
 
 /* ══ SKILLS-PANEL ══════════════════════════════════════════ */
@@ -228,15 +224,9 @@ footer{text-align:center;padding:2rem 1rem;font-size:.74rem;color:var(--muted);b
 <main class="wrap">
   <div id="sek">
     <div class="sek-hd" id="sh">
-      <div class="sek-left">
-        <div class="sek-lbl">Passende Skills für</div>
-        <div class="sek-title" id="st">Mittlere Anspannung</div>
-        <div class="sek-bereich" id="sb">30 % – 70 %</div>
-      </div>
-      <span class="tacho" id="tc"></span>
+      <div class="kat-tabs" id="kt"></div>
     </div>
     <div class="sek-intro" id="si"></div>
-    <div class="kat-tabs" id="kt"></div>
     <div class="skills-panel" id="sp">
       <div class="skills-count" id="sc"></div>
       <div class="skills-grid" id="sg"></div>
@@ -338,8 +328,7 @@ function updateRegler(){ updateAmpel(); }
 /* ── RENDER ─────────────────────────────────────────────── */
 function render(anim){
   var d=DATA[S.level];
-  el('st').textContent=d.label; el('sb').textContent=d.bereich;
-  el('si').textContent=d.intro; el('tc').textContent=d.icon;
+  el('si').textContent=d.intro;
   if(anim){ var p=el('sek'); p.classList.remove('level-switching'); void p.offsetWidth; p.classList.add('level-switching'); }
 
   /* Tabs */
