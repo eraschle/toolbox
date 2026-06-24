@@ -31,7 +31,7 @@ sys.stderr.reconfigure(encoding="utf-8")
 ROOT = Path(__file__).resolve().parent
 XLSX = ROOT / "skills_daten.xlsx"
 TEMPLATE = ROOT / "template.html"
-OUTPUT = ROOT / "Skillsliste.html"
+OUTPUT = ROOT / "docs" / "Skillsliste.html"   # veröffentlichter Ordner
 PLACEHOLDER = "var DATA = /*__BUILD_DATA__*/{};"
 
 # Anzeige-Name (Excel)  ->  interner Schlüssel (HTML/JS, darf sich NICHT ändern)

@@ -10,8 +10,11 @@ Webseite wird danach per Doppelklick neu erzeugt.
 |---|---|
 | **`skills_daten.xlsx`** | Hier werden die Inhalte bearbeitet (das ist die einzige Datei, die du anfasst). |
 | **`build.bat`** | Doppelklick → erzeugt die Webseite neu. |
-| `Skillsliste.html` | Das **Ergebnis** (die fertige Webseite). Wird automatisch überschrieben — **nicht von Hand bearbeiten.** |
+| Ordner **`docs/`** | Das **Ergebnis** (die fertige Webseite, `docs/Skillsliste.html`). Wird automatisch erzeugt/überschrieben und online veröffentlicht — **nicht von Hand bearbeiten.** |
 | `template.html`, `build.py`, Ordner `tools/` | Technik dahinter (für Entwickler) — bitte nicht verändern. |
+
+> **Aufteilung:** Im Hauptordner liegt die **Quelle** (das, was du bearbeitest);
+> im Ordner `docs/` liegt nur das fertige **Ergebnis**, das online geht.
 
 ## Einmalig: „uv" installieren
 
@@ -36,7 +39,7 @@ installieren, danach nie wieder).
 2. Änderungen vornehmen (siehe unten) und **speichern** (Format **Excel-Arbeitsmappe `.xlsx`** beibehalten — **nicht** als CSV speichern!).
 3. **`build.bat` doppelklicken.** Es erscheint kurz ein schwarzes Fenster mit
    `✅ Skillsliste.html wurde neu erstellt.`
-4. `Skillsliste.html` im Browser öffnen und prüfen.
+4. `docs/Skillsliste.html` im Browser öffnen und prüfen.
 
 ### Das Blatt `Skills` (Haupt-Tabelle)
 
@@ -97,9 +100,10 @@ immer farbig**.
 - ✅ Nur **`skills_daten.xlsx`** bearbeiten.
 - ✅ Immer als **`.xlsx`** speichern (niemals als CSV — das zerstört die Emoji!).
 - ⛔ Blatt-Namen und die **Kopfzeile** (erste Zeile) nicht umbenennen.
-- ⛔ `Skillsliste.html`, `template.html`, `build.py` nicht von Hand ändern.
+- ⛔ Den Ordner `docs/` sowie `template.html`, `build.py` nicht von Hand ändern.
 
 ## Veröffentlichen
 
-Nach dem Bauen ist `Skillsliste.html` aktuell. Wie die Datei online geht
-(z. B. GitHub Pages), bleibt wie bisher — am Inhalt ändert das nichts.
+Nach dem Bauen liegt das fertige Ergebnis im Ordner `docs/`. Beim Hochladen
+(Push) der Änderungen wird `docs/` automatisch via GitHub Pages online gestellt —
+am Vorgehen ändert sich für dich nichts.

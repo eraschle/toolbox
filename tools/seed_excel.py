@@ -28,7 +28,7 @@ from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.datavalidation import DataValidation
 
 ROOT = Path(__file__).resolve().parent.parent
-HTML = ROOT / "Skillsliste.html"
+HTML = ROOT / "docs" / "Skillsliste.html"
 OUT = ROOT / "skills_daten.xlsx"
 
 STUFE_DISPLAY = {"hoch": "Hoch", "mittel": "Mittel", "tief": "Tief"}
