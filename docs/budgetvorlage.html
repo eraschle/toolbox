@@ -913,6 +913,12 @@
             .section:first-of-type {
                 page-break-before: avoid;
             }
+            /* Unterbereiche (z. B. Wohnkosten, Energie) nicht mitten umbrechen:
+               passt ein Unterbereich nicht mehr aufs Blatt, wandert er komplett
+               auf die nächste Seite. */
+            .subsection {
+                page-break-inside: avoid;
+            }
             .section-title {
                 font-size: 1.25rem;
             }
