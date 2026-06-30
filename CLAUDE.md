@@ -43,13 +43,13 @@ Details für Nicht-Techniker: `ANLEITUNG.md`.
 ## Konvention: Fusszeile mit Urheber-Credit
 
 **Jede HTML-Seite in `docs/` MUSS in der `<footer>` den Urheber-Credit enthalten**
-(Avatar vom GitHub-Account + „Erstellt von Erich Raschle", verlinkt aufs Profil):
+(Avatar der GitHub-Organisation + „Erstellt von stayingclean", verlinkt auf die Org):
 
 ```html
-<a class="footer-credit" href="https://github.com/eraschle" target="_blank" rel="noopener">
-  <img class="footer-avatar" src="https://github.com/eraschle.png?size=80"
-       alt="Erich Raschle" loading="lazy" width="28" height="28">
-  <span>Erstellt von Erich Raschle</span>
+<a class="footer-credit" href="https://github.com/stayingclean" target="_blank" rel="noopener">
+  <img class="footer-avatar" src="https://github.com/stayingclean.png?size=80"
+       alt="stayingclean" loading="lazy" width="28" height="28">
+  <span>Erstellt von stayingclean</span>
 </a>
 ```
 
@@ -63,7 +63,7 @@ Dazu dieses CSS (Farben/Abstände an das jeweilige Theme der Seite anpassen):
   border:1px solid var(--border);object-fit:cover;display:block}
 ```
 
-- Avatar kommt direkt von `https://github.com/eraschle.png` (aktualisiert sich
-  automatisch, wenn das GitHub-Profilbild geändert wird).
+- Avatar kommt direkt von `https://github.com/stayingclean.png` (aktualisiert sich
+  automatisch, wenn das Organisations-Logo geändert wird).
 - Bei der Skillsliste steht der Credit in **`template.html`** (nicht in der
   generierten `docs/skillsliste.html`), sonst direkt in der jeweiligen HTML-Datei.
