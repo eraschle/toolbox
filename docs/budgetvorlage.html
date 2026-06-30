@@ -223,6 +223,26 @@
             display: flex;
             gap: 0.5rem;
             flex-wrap: wrap;
+            align-items: center;
+        }
+        /* Druck-Option: schaltet nur das Mitdrucken der Kommentare (Strg+P). */
+        .print-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            user-select: none;
+            padding-right: 0.6rem;
+            margin-right: 0.1rem;
+            border-right: 1px solid var(--color-border);
+        }
+        .print-toggle:hover { color: var(--color-text); }
+        .print-toggle input {
+            margin: 0;
+            cursor: pointer;
+            accent-color: var(--color-primary);
         }
 
         /* ============================================================
@@ -936,13 +956,18 @@
             .versions-overview-section {
                 page-break-inside: avoid;
             }
-            /* Hide the chevron button; print-format the open comment rows
-               so users see their notes on paper too. Empty rows stay hidden. */
+            /* Chevron-Buttons nie drucken. */
             .row-expander {
                 display: none !important;
             }
-            .expander-row[hidden] {
+            /* Kommentare nur drucken, wenn die Checkbox „Kommentare drucken"
+               aktiv ist – und dann nur Zeilen mit echtem Kommentartext (per JS
+               beim Drucken markiert, unabhängig vom Auf-/Zuklappen am Bildschirm). */
+            .expander-row {
                 display: none !important;
+            }
+            body.print-comments .expander-row.has-comment {
+                display: table-row !important;
             }
             .comment-panel {
                 border-left-color: #999 !important;
@@ -1274,6 +1299,10 @@
             <span class="status-text" id="statusText">Keine Datei verbunden</span>
         </div>
         <div class="toolbar-actions">
+            <label class="print-toggle" title="Steuert nur den Ausdruck (Strg+P): Kommentare mitdrucken oder nicht.">
+                <input type="checkbox" id="chkPrintComments" checked>
+                <span>Kommentare drucken</span>
+            </label>
             <button type="button" class="btn btn-secondary" id="btnOpen" title="Bestehende Budget-Datei öffnen">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
@@ -3214,6 +3243,22 @@
         $('#btnOpen').addEventListener('click', openFile);
         $('#btnSave').addEventListener('click', saveFile);
         $('#btnReset').addEventListener('click', resetAll);
+
+        // Druck-Steuerung: Checkbox schaltet, ob Kommentare mitgedruckt werden.
+        const chkPrintComments = $('#chkPrintComments');
+        function applyPrintComments() {
+            document.body.classList.toggle('print-comments', chkPrintComments.checked);
+        }
+        chkPrintComments.addEventListener('change', applyPrintComments);
+        applyPrintComments();
+        // Vor dem Drucken Zeilen mit echtem Kommentartext markieren – unabhängig
+        // davon, ob sie am Bildschirm auf- oder zugeklappt sind.
+        window.addEventListener('beforeprint', () => {
+            $$('.expander-row').forEach((tr) => {
+                const ta = tr.querySelector('.comment-textarea');
+                tr.classList.toggle('has-comment', !!(ta && ta.value.trim() !== ''));
+            });
+        });
         $('#addVersionBtn').addEventListener('click', handleAddVersionClick);
 
         // Backdrop click on ANY modal triggers its cancel button.
